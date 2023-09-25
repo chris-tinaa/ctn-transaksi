@@ -1,0 +1,83 @@
+<div class="col w-100 mb-4 mt-5">
+    <label class="form-label fw-semibold">Tanggal</label>
+    <input class="form-control" type="date" [(ngModel)]="currentDate" disabled>
+</div>
+
+<div class="flex-column">
+    <label class="form-label fw-semibold">ID Supplier</label>
+    <div class="w-100">
+        <input type="text" placeholder="ID Supplier" class="form-control" [(ngModel)]="supplierId">
+        <button (click)="getSupplierDetail()" class="btn btn-outline-dark text-center mt-3 w-100"
+            style="background-color: black; color: white;"><span>Cari</span></button>
+    </div>
+    <div *ngIf="supplier.nama && supplier.alamat" class="d-flex flex-column border-1 border rounded-1 ps-5 pt-3 mt-lg-4">
+
+        <p class="h3 mb-3 mt-3 mb-3">Data Supplier</p>
+
+        <p class="fw-bold">Nama</p>
+        <p>{{supplier.nama}}</p>
+
+        <p class="fw-bold mt-3">Alamat</p>
+        <p>{{supplier.alamat}}</p>
+
+        <table *ngIf="supplier.nama" class="table table-secondary m-lg-4 w-">
+            <thead>
+                <tr>
+                    <th scope="col">Nama Barang</th>
+                    <th scope="col">Deskripsi Barang</th>
+                    <th scope="col">Harga</th>
+                    <th scope="col">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let itemBarang of supplier.listBarang">
+                    <td class="table-light">{{itemBarang.namaBarang}}</td>
+                    <td class="table-light">{{itemBarang.deskripsi}}</td>
+                    <td class="table-light">{{itemBarang.harga}}</td>
+                    <td class="table-light">
+                        <button (click)="addtoKeranjang(itemBarang)" class="btn btn-outline-dark text-center"
+                            style="background-color: black; color: white;">Pilih</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<hr class="mt-lg-5 mb-lg-5">
+
+<p class="h3 display-6 mt-5">Keranjang Barang</p>
+
+<table *ngIf="listKeranjang" class="table table-secondary mt-lg-5" style="box-sizing: border-box;">
+    <thead>
+        <tr>
+            <th scope="col">Supplier</th>
+            <th scope="col">Nama Barang</th>
+            <th scope="col">Harga</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let itemBarang of listKeranjang">
+            <td class="table-light">{{supplier.nama}}</td>
+            <td class="table-light">{{itemBarang.namaBarang}}</td>
+            <td class="table-light">{{itemBarang.harga}}</td>
+            <td class="table-light">
+                <input type="number" [(ngModel)]="itemBarang.qty" />
+            </td>
+            <td class="table-light"> {{(itemBarang.qty && itemBarang.harga) ? (itemBarang.harga * itemBarang.qty) :
+                (itemBarang.qty ? itemBarang.harga : 0)}}</td>
+            <td class="table-light">
+                <button (click)="deleteFromKeranjang(itemBarang)" class="btn btn-outline-dark text-center"
+                    style="background-color: black; color: white;"><span>Delete</span></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<button (click)="simpanTransaksi()" class="btn btn-outline-dark text-center mt-lg-5 w-100" style="background-color: black; color: white;"><span>Simpan</span></button>
+
+
+<!-- <p class="h3">Grand Total: {{grandTotal}}</p> -->
